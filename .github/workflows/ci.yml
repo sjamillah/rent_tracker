@@ -1,0 +1,39 @@
+name: RentTrack CI
+
+# When to run: on every push to any branch,
+# and on every pull request targeting main
+on:
+  push:
+    branches: [ '**']
+  pull_request:
+    branches: [ main ]
+jobs:
+  test-backend:
+    name: Python Backend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1 - Download your code onto the CI machine
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2 - Install Python 3.11
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    # Step 3 - Install all required packages from requirements.txt
+    - name: Install dependencies
+      run: pip install -r requirements.txt pytest pytest-cov
+      working-directory: ./backend
+
+    # Step 4 - Run all pytest tests
+    - name: Run tests
+      run: python -m pytest tests/ -v
+      working-directory: ./backend
+
+    # Step 5 - Generate a coverage report
+    - name: Coverage report
+      run: python -m pytest tests/ --cov=app --cov-report=term-missing
+      working-directory: ./backend
