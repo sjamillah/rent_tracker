@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+env/
+.env
+venv/
+.venv/
+*.egg-info/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# React
+node_modules/
+build/
+dist/
+
+# OS
+.DS_Store
+*.log
