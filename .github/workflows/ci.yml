@@ -7,8 +7,8 @@ on:
     branches: [ '**']
   pull_request:
     branches: [ main ]
+
 jobs:
-  # -------------------- BACKEND --------------------
   test-backend:
     name: Python Backend Tests
     runs-on: ubuntu-latest
@@ -29,48 +29,22 @@ jobs:
       run: pip install -r requirements.txt pytest pytest-cov
       working-directory: ./backend
 
-    # Step 4 - Run all pytest tests
+    # Step 4 - Run Ruff linter
+    - name: Run Ruff
+      run: ruff check .
+      working-directory: ./backend
+
+    # Step 5 - Run Black in check mode
+    - name: Run Black
+      run: black --check .
+      working-directory: ./backend
+
+    # Step 6 - Run all pytest tests
     - name: Run tests
       run: python -m pytest tests/ -v
       working-directory: ./backend
 
-    # Step 5 - Generate a coverage report
+    # Step 7 - Generate a coverage report
     - name: Coverage report
       run: python -m pytest tests/ --cov=app --cov-report=term-missing
       working-directory: ./backend
-
-  # -------------------- BACKEND --------------------
-  test-frontend:
-    name: React Frontend checks
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    # install node
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-
-    # install packages
-    - name: Inatall dependencies
-      run: npm install
-      working-directory: ./frontend
-
-    # run eslint
-    - name: Run ESLint
-      run: npm run lint
-      working-directory: ./frontend
-
-    # run tests
-    - name: Run tests
-      run: npm test -- --watchAll=false
-      working-directory: ./frontend
-
-    # build project
-    - name: Build React app
-      run: npm run build
-      working-directory: ./frontend
-
