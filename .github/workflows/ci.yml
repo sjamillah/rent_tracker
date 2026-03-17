@@ -7,6 +7,7 @@ on:
     branches: [ '**']
   pull_request:
     branches: [ main ]
+
 jobs:
   test-backend:
     name: Python Backend Tests
@@ -28,12 +29,22 @@ jobs:
       run: pip install -r requirements.txt pytest pytest-cov
       working-directory: ./backend
 
-    # Step 4 - Run all pytest tests
+    # Step 4 - Run Ruff linter
+    - name: Run Ruff
+      run: ruff check .
+      working-directory: ./backend
+
+    # Step 5 - Run Black in check mode
+    - name: Run Black
+      run: black --check .
+      working-directory: ./backend
+
+    # Step 6 - Run all pytest tests
     - name: Run tests
       run: python -m pytest tests/ -v
       working-directory: ./backend
 
-    # Step 5 - Generate a coverage report
+    # Step 7 - Generate a coverage report
     - name: Coverage report
       run: python -m pytest tests/ --cov=app --cov-report=term-missing
       working-directory: ./backend
