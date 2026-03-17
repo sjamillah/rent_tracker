@@ -26,7 +26,7 @@ def test_exact_hours_calculated_correctly():
     assert result['duration_hours'] == 3
     assert result['total_charge'] == 15
 
-def test_exact_hours_calculated_correctly():
+def test_bike_rate_calculated_correctly():
     """Exactly 5 hours at $5/hr should be $25"""
     start = datetime(2024, 1, 1, 9, 0, 0, tzinfo=timezone.utc)
     end = datetime(2024, 1, 1, 14, 0, 0, tzinfo=timezone.utc)
@@ -34,7 +34,7 @@ def test_exact_hours_calculated_correctly():
     assert result['duration_hours'] == 5
     assert result['total_charge'] == 25
 
-def test_exact_hours_calculated_correctly():
+def test_total_charge_is_duration_times_rate():
     """total_charge should always equal duration_hours * rate_per_hour"""
     start = datetime(2024, 1, 1, 6, 0, 0, tzinfo=timezone.utc)
     end = datetime(2024, 1, 1, 10, 0, 0, tzinfo=timezone.utc)
