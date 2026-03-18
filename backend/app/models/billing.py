@@ -1,4 +1,3 @@
-from datetime import datetime
 import math
 
 
@@ -6,7 +5,7 @@ def calculate_charge(start_time, end_time, rate_per_hour):
     """
     Calculate the total charge for a rental of a vehicle
 
-    Args: 
+    Args:
         - start_time: datetime when the rent of the vehicle began
         - end_time: datetime when the rent of the vehicle ended
         - rate_per_hour: cost in dollars per hour
@@ -21,7 +20,4 @@ def calculate_charge(start_time, end_time, rate_per_hour):
     duration_hours = max(1, math.ceil(duration_seconds / 3600))
     total_charge = duration_hours * rate_per_hour
 
-    return {
-        'duration_hours': duration_hours,
-        'total_charge': total_charge
-    }
+    return {"duration_hours": duration_hours, "total_charge": total_charge}
