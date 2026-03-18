@@ -1,0 +1,26 @@
+{
+  "vehicles": [
+    {
+      "id": "v1",
+      "name": "Toyota Corolla",
+      "type": "car",
+      "rate_per_hour": 10,
+      "status": "available"
+    },
+    {
+      "id": "v2",
+      "name": "Honda CB150",
+      "type": "bike",
+      "rate_per_hour": 5,
+      "status": "available"
+    },
+    {
+      "id": "v3",
+      "name": "Suzuki Swift",
+      "type": "car",
+      "rate_per_hour": 8,
+      "status": "available"
+    }
+  ],
+  "rentals": []
+}
