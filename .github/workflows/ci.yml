@@ -26,7 +26,7 @@ jobs:
 
     # Step 3 - Install all required packages from requirements.txt
     - name: Install dependencies
-      run: pip install -r requirements.txt pytest pytest-cov
+      run: pip install -r requirements.txt
       working-directory: ./backend
 
     # Step 4 - Run Ruff linter
