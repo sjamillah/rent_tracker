@@ -8,6 +8,10 @@ def create_app():
     # Allowing the frontend to call the API
     CORS(app)
 
+    @app.route("/")
+    def index():
+        return {"message": "RentTrack API", "endpoints": ["/api/vehicles", "/api/rentals"]}, 200
+
     # Registration of the route blueprints
     from app.routes.vehicles import vehicles_bp
     from app.routes.rentals import rentals_bp
