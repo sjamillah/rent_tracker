@@ -10,7 +10,9 @@ def create_app():
 
     # Registration of the route blueprints
     from app.routes.vehicles import vehicles_bp
+    from app.routes.rentals import rentals_bp
 
     app.register_blueprint(vehicles_bp, url_prefix="/api/vehicles")
+    app.register_blueprint(rentals_bp, url_prefix="/api/rentals")
 
     return app
