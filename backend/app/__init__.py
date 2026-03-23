@@ -10,7 +10,10 @@ def create_app():
 
     @app.route("/")
     def index():
-        return {"message": "RentTrack API", "endpoints": ["/api/vehicles", "/api/rentals"]}, 200
+        return {
+            "message": "RentTrack API",
+            "endpoints": ["/api/vehicles", "/api/rentals"],
+        }, 200
 
     # Registration of the route blueprints
     from app.routes.vehicles import vehicles_bp
