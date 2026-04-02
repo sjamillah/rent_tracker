@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+@layer base {
+	body {
+		margin: 0;
+		font-family: 'Source Sans 3', sans-serif;
+		color: #0f172a;
+		background:
+			radial-gradient(800px 400px at 10% 0%, rgba(251, 191, 36, 0.2), transparent 60%),
+			radial-gradient(700px 350px at 100% 100%, rgba(34, 211, 238, 0.18), transparent 60%),
+			#f8fafc;
+	}
+
+	h1,
+	h2,
+	h3 {
+		font-family: 'Space Grotesk', sans-serif;
+		letter-spacing: -0.02em;
+	}
+}
+
+@layer components {
+	.fade-in-up {
+		animation: fadeInUp 420ms ease-out both;
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

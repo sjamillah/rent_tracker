@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
- 
+import { API_BASE } from './config';
+
 export default function VehicleList({ onRent }) {
   const [vehicles, setVehicles] = useState([]);
   const [filter, setFilter]     = useState('all');
@@ -7,11 +8,23 @@ export default function VehicleList({ onRent }) {
   const [error, setError]       = useState(null);
  
   useEffect(() => {
-    fetch('http://localhost:4000/api/vehicles/')
-      .then(res => res.json())
-      .then(data => { setVehicles(data); setLoading(false); })
-      .catch(() => {
-        setError('Could not connect to server. Make sure the backend is running.');
+    fetch(`${API_BASE}/vehicles/`)
+      .then(async (res) => {
+        const payload = await res.json();
+        if (!res.ok) {
+          throw new Error(payload?.message || payload?.error || 'Failed to fetch vehicles.');
+        }
+        if (!Array.isArray(payload)) {
+          throw new Error('Unexpected response from server while loading vehicles.');
+        }
+        return payload;
+      })
+      .then((data) => {
+        setVehicles(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(`${err.message} Please make sure backend is running on port 4000.`);
         setLoading(false);
       });
   }, []);
@@ -21,13 +34,13 @@ export default function VehicleList({ onRent }) {
     : vehicles.filter(v => v.type === filter);
  
   if (loading) return (
-    <div className="flex justify-center items-center py-12">
+    <div className="flex items-center justify-center py-12">
       <p className="text-lg text-gray-600">Loading vehicles...</p>
     </div>
   );
   
   if (error) return (
-    <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+    <div className="p-4 text-red-700 border border-red-200 rounded-lg bg-red-50">
       {error}
     </div>
   );
@@ -35,8 +48,8 @@ export default function VehicleList({ onRent }) {
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Filter Vehicles</h2>
-        <div className="flex gap-3 flex-wrap">
+        <h2 className="mb-4 text-2xl font-bold text-gray-800">Filter Vehicles</h2>
+        <div className="flex flex-wrap gap-3">
           <button
             onClick={() => setFilter('all')}
             className={`px-6 py-2 rounded-lg font-medium transition-colors ${
@@ -70,15 +83,15 @@ export default function VehicleList({ onRent }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filtered.map(vehicle => (
           <div
             key={vehicle.id}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-100"
+            className="p-6 transition-shadow bg-white border border-gray-100 rounded-lg shadow-md hover:shadow-lg"
           >
-            <h3 className="text-xl font-bold text-gray-900 mb-3">{vehicle.name}</h3>
+            <h3 className="mb-3 text-xl font-bold text-gray-900">{vehicle.name}</h3>
             
-            <div className="space-y-2 mb-4 text-gray-600">
+            <div className="mb-4 space-y-2 text-gray-600">
               <p><span className="font-semibold text-gray-700">Type:</span> <span className="capitalize">{vehicle.type}</span></p>
               <p><span className="font-semibold text-gray-700">Rate:</span> <span className="text-lg font-bold text-green-600">${vehicle.rate_per_hour}/hr</span></p>
               <p>
@@ -96,7 +109,7 @@ export default function VehicleList({ onRent }) {
             {vehicle.status === 'available' && (
               <button
                 onClick={() => onRent(vehicle)}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="w-full px-4 py-2 font-semibold text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700"
               >
                 Rent This Vehicle
               </button>
@@ -104,7 +117,7 @@ export default function VehicleList({ onRent }) {
             {vehicle.status !== 'available' && (
               <button
                 disabled
-                className="w-full bg-gray-200 text-gray-500 font-semibold py-2 px-4 rounded-lg cursor-not-allowed"
+                className="w-full px-4 py-2 font-semibold text-gray-500 bg-gray-200 rounded-lg cursor-not-allowed"
               >
                 Not Available
               </button>
@@ -114,8 +127,8 @@ export default function VehicleList({ onRent }) {
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No vehicles found for this filter.</p>
+        <div className="py-12 text-center">
+          <p className="text-lg text-gray-500">No vehicles found for this filter.</p>
         </div>
       )}
     </div>
